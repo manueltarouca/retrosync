@@ -62,11 +62,13 @@ ipcMain.on('select-folder', async (event, options) => {
   } else {
     const dir = result.filePaths[0];
     console.log(`Selected folder: ${dir}`);
-    const paths = search(dir, '.sav');
+    const files = search(dir, '.sav');
     const formData = new FormData();
-    paths.forEach(path => {
-      const file = fs.readFileSync(path);
-      formData.append('file', file, path) ;     
+    files.forEach(fileData => {
+      const file = fs.readFileSync(fileData.path);
+      formData.append('file', file, fileData.path);
+      formData.append('filepath', fileData.path);
+      formData.append('filename', fileData.name);
     });
 
     const confirm = await dialog.showMessageBox({
