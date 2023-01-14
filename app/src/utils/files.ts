@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 
-export interface File {
+export interface FileData {
   name: string;
   path: string;
 }
 
 export function search(dir: string, extension: string) {
   const list = fs.readdirSync(dir);
-  const paths = new Array<File>();
+  const paths = new Array<FileData>();
   list.forEach((file) => {
     const filePath = path.resolve(dir, file);
     const statResult = fs.statSync(filePath);

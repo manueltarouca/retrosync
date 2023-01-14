@@ -55,6 +55,9 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+const API_BASE_URL = 'http://localhost:3001';
+
 ipcMain.on('select-folder', async (event, options) => {
   const result = await dialog.showOpenDialog(options);
   if (result.canceled) {
@@ -67,8 +70,7 @@ ipcMain.on('select-folder', async (event, options) => {
     files.forEach(fileData => {
       const file = fs.readFileSync(fileData.path);
       formData.append('file', file, fileData.path);
-      formData.append('filepath', fileData.path);
-      formData.append('filename', fileData.name);
+      formData.append('filedata', JSON.stringify(fileData));
     });
 
     const confirm = await dialog.showMessageBox({
@@ -76,7 +78,7 @@ ipcMain.on('select-folder', async (event, options) => {
       message: 'Do you wish to backup this folder save files?'
     });
     if (confirm.response === 0) {
-      await axios.post('http://localhost:3001/upload', formData, {
+      await axios.post(`${API_BASE_URL}/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         }

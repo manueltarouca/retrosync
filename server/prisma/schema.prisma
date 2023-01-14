@@ -16,11 +16,12 @@ model User {
 }
 
 model Saves {
-  id           Int    @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   userId       Int
   name         String
   originalName String
   path         String
   originalPath String?
-  user         User   @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
 }
