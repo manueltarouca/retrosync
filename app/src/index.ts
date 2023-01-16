@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, ipcRenderer } from 'electron';
 import fs from 'fs';
 import FormData from 'form-data';
 import { search } from './utils/files';
@@ -21,6 +21,7 @@ const createWindow = (): void => {
     width: 800,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      webviewTag: true
     },
   });
 
@@ -66,6 +67,7 @@ ipcMain.on('select-folder', async (event, options) => {
     const dir = result.filePaths[0];
     console.log(`Selected folder: ${dir}`);
     const files = search(dir, '.sav');
+    
     const formData = new FormData();
     files.forEach(fileData => {
       const file = fs.readFileSync(fileData.path);
@@ -78,6 +80,7 @@ ipcMain.on('select-folder', async (event, options) => {
       message: 'Do you wish to backup this folder save files?'
     });
     if (confirm.response === 0) {
+      event.sender.send('test', files);
       await axios.post(`${API_BASE_URL}/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
