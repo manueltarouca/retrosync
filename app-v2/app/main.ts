@@ -1,6 +1,10 @@
-import {app, BrowserWindow, screen} from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, screen } from 'electron';
+import axios from 'axios';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as FormData from 'form-data';
+
+import { search } from './utils/file';
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
@@ -34,7 +38,7 @@ function createWindow(): BrowserWindow {
     let pathIndex = './index.html';
 
     if (fs.existsSync(path.join(__dirname, '../dist/index.html'))) {
-       // Path when running electron in local folder
+      // Path when running electron in local folder
       pathIndex = '../dist/index.html';
     }
 
@@ -74,6 +78,39 @@ try {
     // dock icon is clicked and there are no other windows open.
     if (win === null) {
       createWindow();
+    }
+  });
+
+  const API_BASE_URL = 'http://localhost:3001';
+
+  ipcMain.on('select-folder', async (event, options) => {
+    const result = await dialog.showOpenDialog(options);
+    if (result.canceled) {
+      console.log('User canceled');
+    } else {
+      const dir = result.filePaths[0];
+      console.log(`Selected folder: ${dir}`);
+      const files = search(dir, '.sav');
+
+      const formData = new FormData();
+      files.forEach(fileData => {
+        const file = fs.readFileSync(fileData.path);
+        formData.append('file', file, fileData.path);
+        formData.append('filedata', JSON.stringify(fileData));
+      });
+
+      const confirm = await dialog.showMessageBox({
+        buttons: ['yes', 'no'],
+        message: 'Do you wish to backup this folder save files?'
+      });
+      if (confirm.response === 0) {
+        event.sender.send('test', files);
+        await axios.post(`${API_BASE_URL}/upload`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+      }
     }
   });
 
