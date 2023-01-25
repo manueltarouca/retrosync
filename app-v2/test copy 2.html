@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Retro Home Page</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      .hero {
+        background-color: #333;
+        color: #fff;
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: 600;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-800 text-gray-300 font-mono">
+    <header class="bg-gray-600">
+      <nav class="container px-4 py-2 flex justify-between">
+        <a class="text-white font-medium" href="#">Retro</a>
+        <div class="flex">
+          <a class="text-white mr-4" href="#">Home</a>
+          <a class="text-white" href="#">About</a>
+        </div>
+      </nav>
+    </header>
+    <div class="hero">
+      <h1 class="text-center text-white">Welcome to Retro</h1>
+    </div>
+    <div class="container px-4 py-8">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-gray-600 rounded-lg p-4">
+          <h2 class="text-white text-lg font-medium">Retro Style</h2>
+          <p class="text-gray-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, leo eget tincidunt bibendum, purus tellus bibendum ex, at aliquet ipsum justo a nulla.</p>
+        </div>
+        <div class="bg-gray-600 rounded-lg p-4">
+          <h2 class="text-white text-lg font-medium">Vintage Design</h2>
+          <p class="text-gray-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, leo eget tincidunt bibendum, purus tellus bibendum ex, at aliquet ipsum justo a nulla.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="bg-gray-600 py-4">
+      <div class="container text-center text-white">
+        Retro © 2020
+      </div>
+    </footer>
+  </body>
+</html>
