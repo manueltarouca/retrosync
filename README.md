@@ -12,3 +12,4 @@ It includes:
 - nodejs
 - express (server)
 - electronjs (app)
+- prisma (orm)
