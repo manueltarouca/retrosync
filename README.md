@@ -11,5 +11,5 @@ It includes:
 # Tech stack
 - nodejs
 - express (server)
-- electronjs (app)
+- electronjs + angular (app)
 - prisma (orm)
